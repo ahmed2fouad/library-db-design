@@ -187,3 +187,95 @@ ALTER TABLE ONLY public.borrowings
 
 \unrestrict 6XLOe3xxlRZblAOqfixmohdq8bXIWNppWEu4PhwVA2y5W1c1Uknm4hn2x6Q01NC
 
+-- ============================================
+-- Real Queries
+-- ============================================
+
+-- Query 1: Show users and their borrowing dates
+SELECT u.name, br.borrow_date
+FROM users u
+JOIN borrowings br
+ON u.id = br.user_id;
+
+
+
+
+
+
+
+
+
+
+-- Query 2: Show users and the books they borrowed
+SELECT u.name, b.name
+FROM users u
+JOIN borrowings br
+ON u.id = br.user_id
+JOIN book b
+ON br.book_id = b.id;
+
+
+
+
+
+
+
+
+
+-- Query 3: Count borrowings for each book
+SELECT b.name, COUNT(br.book_id) AS borrowing_count
+FROM book b
+JOIN borrowings br
+ON b.id = br.book_id
+GROUP BY b.name
+ORDER BY borrowing_count DESC;
+
+
+
+
+
+
+
+
+
+
+-- Query 4: Find the most active user
+SELECT u.name, COUNT(br.book_id) AS borrowing_count
+FROM users u
+JOIN borrowings br
+ON u.id = br.user_id
+GROUP BY u.name
+ORDER BY borrowing_count DESC
+LIMIT 1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- Query 5: Programming books borrowed after August 1, 2026
+SELECT u.name, b.name, br.borrow_date
+FROM users u
+JOIN borrowings br
+ON u.id = br.user_id
+JOIN book b
+ON br.book_id = b.id
+WHERE br.borrow_date > '2026-08-01'
+AND b.type = 'Programming';
+
+
+
+
+
+
+
+
+
+
