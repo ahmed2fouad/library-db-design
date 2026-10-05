@@ -1,135 +1,141 @@
-# Library Database System
+# Library Management Database
 
-## 📌 Project Overview
+A relational database project for managing a library system using PostgreSQL.
 
-A simple relational database system designed to manage a library's users, books, and borrowing records.
+The project models users, books, and borrowing operations, with proper relationships, primary keys, foreign keys, constraints, and SQL queries for retrieving useful information from the database.
 
-The project was built using **PostgreSQL** to practice database design, table relationships, foreign keys, data manipulation, and real-world SQL queries.
+## Project Overview
 
-## 🎯 Project Objectives
+The database is designed to handle the main operations of a simple library system:
 
-The main goals of this project are to:
+* Store library users.
+* Store books and their categories.
+* Record book borrowing operations.
+* Connect users with the books they borrow.
+* Query borrowing data using SQL joins, aggregation, filtering, and ordering.
 
-* Design a relational database for a library system.
-* Identify entities and their relationships.
-* Implement the database using PostgreSQL.
-* Use primary keys and foreign keys to maintain data integrity.
-* Practice writing real-world SQL queries.
-* Apply `JOIN`, `WHERE`, `GROUP BY`, `COUNT`, `HAVING`, `ORDER BY`, and `LIMIT`.
+## Database Schema
 
-## 🗂️ Database Structure
-
-The database consists of three main tables:
+The database contains three main tables:
 
 ### Users
 
 Stores information about library users.
 
-* `id` — Primary Key (UUID)
-* `name` — User's name
-* `email` — User's email
+| Column  | Type         | Description          |
+| ------- | ------------ | -------------------- |
+| `id`    | UUID         | Primary key          |
+| `name`  | VARCHAR(40)  | User's name          |
+| `email` | VARCHAR(200) | Unique email address |
 
-### Books
+### Book
 
-Stores information about the books available in the library.
+Stores information about available books.
 
-* `id` — Primary Key (UUID)
-* `name` — Book name
-* `type` — Book category/type
+| Column | Type         | Description        |
+| ------ | ------------ | ------------------ |
+| `id`   | UUID         | Primary key        |
+| `name` | VARCHAR(100) | Book name          |
+| `type` | VARCHAR(100) | Book category/type |
 
 ### Borrowings
 
-Stores borrowing transactions between users and books.
+Stores book borrowing records.
 
-* `id` — Primary Key (UUID)
-* `user_id` — Foreign Key referencing `users.id`
-* `book_id` — Foreign Key referencing `book.id`
-* `borrow_date` — Date when the book was borrowed
-* `return_date` — Expected/recorded return date
+| Column        | Type | Description                        |
+| ------------- | ---- | ---------------------------------- |
+| `id`          | UUID | Primary key                        |
+| `user_id`     | UUID | Foreign key referencing `users.id` |
+| `book_id`     | UUID | Foreign key referencing `book.id`  |
+| `borrow_date` | DATE | Date when the book was borrowed    |
+| `return_date` | DATE | Expected/recorded return date      |
 
-## 🔗 Relationships
+## Relationships
 
-The database uses foreign keys to establish relationships between the tables.
+The database uses foreign keys to represent the relationships between the tables.
 
-```text
-Users
-  │
-  │ 1
-  │
-  │ N
-Borrowings
-  │
-  │ N
-  │
-  │ 1
-Books
-```
-
-* One user can have many borrowing records.
-* One book can appear in many borrowing records over time.
+* One user can have multiple borrowing records.
+* One book can appear in multiple borrowing records.
 * `borrowings.user_id` references `users.id`.
 * `borrowings.book_id` references `book.id`.
+* Both foreign keys use `ON DELETE CASCADE`.
 
-## 🧩 ER Diagram
+Therefore, the relationship can be represented as:
 
-The Entity-Relationship Diagram was designed before implementing the database tables.
+```text
+Users 1 ────────< Borrowings >──────── 1 Book
+```
 
-![Library Database ER Diagram](ER-Diagram.png)
+This creates a many-to-many relationship between users and books through the `borrowings` table.
 
-## 🔍 SQL Queries
+## ER Diagram
 
-The project includes real-world SQL queries demonstrating:
+![ER Diagram](er-diagram.png)
+
+## SQL Queries
+
+The project includes practical SQL queries for working with the database, including:
 
 * Joining users with their borrowing records.
-* Joining users, borrowings, and books.
-* Counting the number of books borrowed by each user.
-* Grouping borrowed books by category.
-* Filtering grouped results using `HAVING`.
-* Filtering records using `WHERE`.
-* Sorting results using `ORDER BY`.
-* Limiting query results using `LIMIT`.
+* Retrieving users and the books they borrowed.
+* Counting how many times each book was borrowed.
+* Finding the user with the highest number of borrowings.
+* Filtering borrowing records based on dates and book types.
+* Using `JOIN`, `GROUP BY`, `COUNT`, `ORDER BY`, `LIMIT`, and `WHERE`.
 
-## 🛠️ Technologies
+All project SQL commands and queries are available in:
 
-* **PostgreSQL**
-* **SQL**
-* **ER Diagram / Relational Database Design**
-* **Git & GitHub**
+```text
+library_system.sql
+```
 
-## 📁 Project Files
+## Technologies
+
+* PostgreSQL
+* SQL
+* UUID
+* Relational Database Design
+* ER Modeling
+
+## Project Structure
 
 ```text
 library-db-design/
 │
+├── README.md
 ├── library_system.sql
-├── ER-Diagram.png
-└── README.md
+└── er-diagram.png
 ```
 
-### `library_system.sql`
+## Database Design Concepts
 
-Contains the SQL commands used to:
+This project demonstrates practical understanding of:
 
-* Create the database structure.
-* Create tables.
-* Define primary and foreign keys.
-* Insert sample data.
-* Execute the project's real-world queries.
-
-## 📚 What I Practiced
-
-Through this project, I practiced:
-
-* Relational database design
-* Primary Keys and Foreign Keys
+* Primary Keys
+* Foreign Keys
 * UUIDs
-* Table relationships
-* `JOIN`
-* `WHERE`
+* Unique Constraints
+* NOT NULL Constraints
+* One-to-Many Relationships
+* Many-to-Many Relationships
+* Junction Tables
+* Referential Integrity
+* `ON DELETE CASCADE`
+* SQL Joins
+* Aggregation
 * `GROUP BY`
 * `COUNT`
-* `HAVING`
 * `ORDER BY`
 * `LIMIT`
-* Basic database normalization concepts
-* Writing SQL queries based on real database relationships
+* `WHERE`
+
+## Learning Outcomes
+
+Through this project, I practiced designing a relational database from requirements, converting an ER diagram into PostgreSQL tables, creating relationships using foreign keys, inserting realistic data, and writing SQL queries to retrieve and analyze the stored data.
+
+## Author
+
+**Ahmed Fouad**
+
+Backend Development Learner | Python & PostgreSQL
+
